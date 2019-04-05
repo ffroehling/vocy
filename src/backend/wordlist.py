@@ -1,11 +1,15 @@
 from webargs import fields, validate, ValidationError
 from webargs.flaskparser import use_kwargs, use_args, parser
 from model import *
+from database import Session
 from entities import EntityList, EntityDetail
+from flask import Flask, make_response
+from flask_restful import Resource, Api, reqparse
 
 def add_list_to_router(api):
     api.add_resource(WordlistList, '/list', endpoint='lists')
     api.add_resource(WordlistDetail, '/list/<int:item_id>', endpoint='list')
+    api.add_resource(ListWordPair, '/list/<int:list_id>/wordpairs', endpoint='wordpairlist')
 
 
 class WordlistList(EntityList):
@@ -92,3 +96,16 @@ class WordlistDetail(EntityDetail):
             return super(WordlistDetail, self).put(item_id, name=name, user_id=user_id, first_language_id=first_language_id, second_language_id=second_language_id)
         else:
             return 'Invalid id received', 400 
+
+class ListWordPair(Resource):
+    def get(self, list_id):
+        session = Session()
+        pairs = session.query(WordPair).filter(WordPair.llist_id == list_id).all()
+
+        result = [p.as_json() for p in pairs]
+
+        session.close()
+
+        return result
+
+        session.close()
