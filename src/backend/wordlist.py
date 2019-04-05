@@ -27,7 +27,6 @@ class WordlistList(EntityList):
     def validate_input(self, user_id, first_language_id, second_language_id):
         session = self.get_session()
         
-        print(user_id)
         user = session.query(User).filter(User.id == user_id).first()
         firstl = session.query(Language).filter(Language.id == first_language_id).first()
         secondl = session.query(Language).filter(Language.id == second_language_id).first()
@@ -74,9 +73,9 @@ class WordlistDetail(EntityDetail):
     def validate_input(self, user_id, first_language_id, second_language_id):
         session = self.get_session()
         
-        user = session.query(User).filter(User.id == user_id).get()
-        firstl = session.query(Language).filter(Language.id == first_language_id).get()
-        secondl = session.query(Language).filter(Language.id == second_language_id).get()
+        user = session.query(User).filter(User.id == user_id).first()
+        firstl = session.query(Language).filter(Language.id == first_language_id).first()
+        secondl = session.query(Language).filter(Language.id == second_language_id).first()
 
         result = user and firstl and secondl
 
@@ -88,8 +87,8 @@ class WordlistDetail(EntityDetail):
         super(WordlistDetail, self).__init__(List)
 
     @use_kwargs(args)
-    def put(self, name, user_id, first_language_id, second_language_id):
+    def put(self, item_id, name, user_id, first_language_id, second_language_id):
         if self.validate_input(user_id, first_language_id, second_language_id):
-            return super(WordlistDetail, self).put(item_id, name=name)
+            return super(WordlistDetail, self).put(item_id, name=name, user_id=user_id, first_language_id=first_language_id, second_language_id=second_language_id)
         else:
             return 'Invalid id received', 400 

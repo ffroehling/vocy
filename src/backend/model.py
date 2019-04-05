@@ -68,8 +68,4 @@ class WordPair(Base):
         #basic attributes
         obj = {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
-        if relationship:
-            #Add relationships
-            obj.list = {l.as_json(relationships=False) for l in self.llist}
-
         return obj
