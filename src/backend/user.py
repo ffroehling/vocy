@@ -1,4 +1,4 @@
-from flask import Flask 
+from flask import Flask, make_response
 from flask_restful import Resource, Api, reqparse
 from database import Session
 from webargs import fields, validate, ValidationError
@@ -64,29 +64,66 @@ from model import *
 #        return obj
 #
 def add_user_to_router(api):
-    api.add_resource(UserEndPoint, '/user')
+    api.add_resource(UserList, '/user', endpoint='users')
+    api.add_resource(UserDetail, '/user/<int:user_id>', endpoint='user')
     #api.add_resource(UserDetail, '/user/<int:todo_id>')
 
 #returns all user
-def get_user(session):
+def get_all_user(session):
     users = session.query(User).all()
     for u in users:
         print(u.as_json())
         #print(u.jaijfois())
 
-    return [u.as_json() for u in users] 
+    return [u.as_json(relationships=False) for u in users] 
+
+def get_user_detail(session, user_id):
+    user = session.query(User).filter(User.id == user_id).first()
+    return user
+
+def update_user(session, user_id, name):
+    user = session.query(User).filter(User.id == user_id).first()
+
+    if user is not None:
+        user.name = name
+        session.add(user)
+        session.commit()
+
+    return user
+
+def delete_user(session, user_id):
+    user = session.query(User).filter(User.id == user_id).first()
+
+    if user:
+        session.delete(user)
+        session.commit()
+        return True
+
+    return False
+
+
+
+def create_user(session, name):
+    try:
+        user = User()
+        user.name = name
+        session.add(user)
+        session.commit()
+        print(user)
+        return (True, user)
+    except Exception as e:
+        #TODO: Log eception
+        return (False, None)
+
+
 
 def operation(func, *args):
     session = Session()
-    result = None
-    #try:
     result = func(session, *args)
-    #finally:
-    session.close()
-    return result
 
-class UserEndPoint(Resource):
-    #For validation of incoming requests
+    return (result, session)
+
+class UserList(Resource):
     args = {
         'name': fields.Str(
             required=True
@@ -95,18 +132,70 @@ class UserEndPoint(Resource):
 
     #return all users
     def get(self):
-        result = operation(get_user)
+        result, session = operation(get_all_user)
+        session.close()
         return result
-    
+
     #create a new user
     @use_kwargs(args)
     def post(self, name):
-        parser = reqparse.RequestParser()
-        parser.add_argument('name')
-        args = parser.parse_args()
-        print(args)
-        print("received")
-        return "asdf"
+        (succ, user), session = operation(create_user, name)
+        if succ:
+            resp = (user.as_json(), 200)
+            session.close()
+
+            return resp
+        else:
+            session.close()
+            return make_response('Unexpected error occured :(', 500)
+
+class UserDetail(Resource):
+    args = {
+        'name': fields.Str(
+            required=True
+        ),
+    }
+
+    def get(self, user_id):
+        user, session = operation(get_user_detail, user_id)
+
+        if user is not None:
+            resp = (user.as_json(), 200)
+            session.close()
+            return resp
+        else:
+            session.close()
+            return make_response('User not found', 400)
+
+        return result
+
+    @use_kwargs(args)
+    def put(self, user_id, name):
+        user, session = operation(update_user, user_id, name)
+
+        if user is not None:
+            resp = (user.as_json(), 200)
+            session.close()
+            return resp
+        else:
+            session.close()
+            return make_response('User not found', 400)
+
+    def delete(self, user_id):
+        succ, session = operation(delete_user, user_id)
+        
+        session.close()
+
+        if succ:
+            return make_response('', 200)
+        else:
+            return make_response('User not found', 400)
+
+
+
+
+
+            
 
 #@parser.error_handler
 #def handle_error(error, req, schema, status_code, headers):
