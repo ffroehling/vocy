@@ -1,6 +1,8 @@
 from flask import Flask 
 from flask_restful import Resource, Api, reqparse
 from database import Session
+from webargs import fields, validate, ValidationError
+from webargs.flaskparser import use_kwargs, use_args, parser
 import json
 import random
 from model import *
@@ -62,20 +64,17 @@ from model import *
 #        return obj
 #
 def add_user_to_router(api):
-    api.add_resource(UserList, '/user')
+    api.add_resource(UserEndPoint, '/user')
     #api.add_resource(UserDetail, '/user/<int:todo_id>')
 
 #returns all user
 def get_user(session):
     users = session.query(User).all()
-    print(users)
     for u in users:
         print(u.as_json())
         #print(u.jaijfois())
 
-    return None
-
-    return [u.as_json() for u in user] 
+    return [u.as_json() for u in users] 
 
 def operation(func, *args):
     session = Session()
@@ -86,10 +85,33 @@ def operation(func, *args):
     session.close()
     return result
 
-class UserList(Resource):
+class UserEndPoint(Resource):
+    #For validation of incoming requests
+    args = {
+        'name': fields.Str(
+            required=True
+        ),
+    }
+
+    #return all users
     def get(self):
         result = operation(get_user)
         return result
+    
+    #create a new user
+    @use_kwargs(args)
+    def post(self, name):
+        parser = reqparse.RequestParser()
+        parser.add_argument('name')
+        args = parser.parse_args()
+        print(args)
+        print("received")
+        return "asdf"
+
+#@parser.error_handler
+#def handle_error(error, req, schema, status_code, headers):
+#    raise ValidationError("Invalid User Object received")
+            
 
 #user = User()
 #user.name = "Felix"

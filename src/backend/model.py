@@ -1,3 +1,4 @@
+import json
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
@@ -16,11 +17,12 @@ class User(Base):
         obj = {c.name: getattr(self, c.name) for c in self.__table__.columns}
         print(obj)
 
-        if relationship:
+        if relationship and self.lists:
             
             #Add relationships
             obj.lists = [l.as_json(relationships=False) for l in self.lists]
 
+        #return json.dumps(obj)
         return obj
 
 class Language(Base):
