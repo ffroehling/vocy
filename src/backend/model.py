@@ -15,15 +15,9 @@ class User(Base):
     def as_json(self, relationships=True):
         #basic attributes
         obj = {c.name: getattr(self, c.name) for c in self.__table__.columns}
-        print(obj)
 
-        if relationship and self.lists:
-            
-            #Add relationships
-            obj.lists = [l.as_json(relationships=False) for l in self.lists]
-
-        #return json.dumps(obj)
         return obj
+
 
 class Language(Base):
     __tablename__ = 'language'
@@ -59,13 +53,6 @@ class List(Base):
     def as_json(self, relationships=True):
         #basic attributes
         obj = {c.name: getattr(self, c.name) for c in self.__table__.columns}
-
-        if relationship:
-            #Add relationships
-            obj.user = {u.as_json(relationships=False) for u in self.user}
-            obj.first_language = {l.as_json(relationships=False) for l in self.first_language}
-            obj.second_language = {l.as_json(relationships=False) for l in self.second_language}
-            obj.wordpars = [wp.as_json(relationships=False) for wp in self.wordpairs]
 
         return obj
 
