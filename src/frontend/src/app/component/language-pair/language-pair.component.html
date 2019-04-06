@@ -1,0 +1,24 @@
+<div>
+
+  <button (click)="openModal('modal_language_pair')"> 
+    <img src="/img/add.png" />
+    <p>Sprachpaar hinzufügen</p>
+  </button>
+
+  <div class="grid-container">
+      <div *ngFor="let pair of language_pairs" class="grid-item" >
+        <h4>{{pair.language_one.name}} - {{pair.language_two.name}}</h4>
+      </div>
+  </div>
+
+  <modal id="modal_language_pair">
+      <div class="modal">
+          <div class="modal-body">
+              <h1 style="height:1000px">A Tall Custom Modal!</h1>
+              <button (click)="closeModal('custom-modal-2');">Close</button>
+          </div>
+      </div>
+      <div class="modal-background"></div>
+  </modal>
+ 
+</div>
