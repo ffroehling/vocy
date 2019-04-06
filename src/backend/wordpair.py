@@ -4,8 +4,8 @@ from model import *
 from entities import EntityList, EntityDetail
 
 def add_wordpair_to_router(api):
-    api.add_resource(WordPairList, '/wordpair', endpoint='wordpairs')
-    api.add_resource(WordPairDetail, '/wordpair/<int:item_id>', endpoint='wordpair')
+    api.add_resource(WordPairList, '/api/wordpair', endpoint='wordpairs')
+    api.add_resource(WordPairDetail, '/api/wordpair/<int:item_id>', endpoint='wordpair')
 
 class WordPairList(EntityList):
     args = {

@@ -7,9 +7,9 @@ from flask import Flask, make_response
 from flask_restful import Resource, Api, reqparse
 
 def add_user_to_router(api):
-    api.add_resource(UserList, '/user', endpoint='users')
-    api.add_resource(UserDetail, '/user/<int:item_id>', endpoint='user')
-    api.add_resource(UserWordList, '/user/<int:user_id>/lists', endpoint='userlist')
+    api.add_resource(UserList, '/api/user', endpoint='users')
+    api.add_resource(UserDetail, '/api/user/<int:item_id>', endpoint='user')
+    api.add_resource(UserWordList, '/api/user/<int:user_id>/lists', endpoint='userlist')
 
 class UserList(EntityList):
     args = {

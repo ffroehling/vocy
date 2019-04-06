@@ -4,8 +4,8 @@ from model import *
 from entities import EntityList, EntityDetail
 
 def add_language_to_router(api):
-    api.add_resource(LanguageList, '/language', endpoint='languages')
-    api.add_resource(LanguageDetail, '/language/<int:item_id>', endpoint='language')
+    api.add_resource(LanguageList, '/api//language', endpoint='languages')
+    api.add_resource(LanguageDetail, '/api/language/<int:item_id>', endpoint='language')
 
 class LanguageList(EntityList):
     args = {
