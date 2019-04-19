@@ -8,6 +8,7 @@ from flask_restful import Resource, Api, reqparse
 
 def add_list_to_router(api):
     api.add_resource(WordlistList, '/api/list', endpoint='lists')
+    api.add_resource(WordlistList, '/api/user/<int:user_id>/list', endpoint='userlists')
     api.add_resource(WordlistDetail, '/api/list/<int:item_id>', endpoint='list')
     api.add_resource(ListWordPair, '/api/list/<int:list_id>/wordpairs', endpoint='wordpairlist')
 
@@ -27,6 +28,12 @@ class WordlistList(EntityList):
             required=True   
         ),
     }
+
+    def get(self, user_id = None):
+        if user_id:
+            return super(WordlistList, self).get_for_user(user_id)
+        else:
+            return super(WordlistList, self).get()
         
     def validate_input(self, user_id, first_language_id, second_language_id):
         session = self.get_session()

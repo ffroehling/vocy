@@ -24,6 +24,16 @@ class EntityList(Entity):
 
         return result
 
+    def get_for_user(self, user_id):
+        session = self.get_session()
+        l = session.query(self.T).filter(self.T.user == user_id).all()
+        
+        result = [item.as_json(relationships=False) for item in l] 
+
+        session.close()
+
+        return result
+
     def post(self, item):
         try:
             session = self.get_session()
