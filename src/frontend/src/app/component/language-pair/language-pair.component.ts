@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {LanguageService} from '../../services/language.service';
-import { Languagepair } from '../../model/languagepair';
-import { ModalService} from '../../services/modal/modal.service';
+//import {LanguageService} from '../../services/language.service';
+//import { Languagepair } from '../../model/languagepair';
+//import { ModalService} from '../../services/modal/modal.service';
 
 @Component({
   selector: 'app-language-pair',
@@ -10,7 +10,7 @@ import { ModalService} from '../../services/modal/modal.service';
 })
 export class LanguagePairComponent implements OnInit {
 
-  private language_pairs : Languagepair[];
+    /*private language_pairs : Languagepair[];
 
   constructor(private language_service : LanguageService, private modalService : ModalService) { 
     var that = this;
@@ -27,8 +27,10 @@ export class LanguagePairComponent implements OnInit {
 
   closeModal(id : string){
     this.modalService.close(id);
-  }
+  }*/
 
   ngOnInit() {}
+    constructor(){
+    }
 
 }

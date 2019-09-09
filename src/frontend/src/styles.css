@@ -52,3 +52,47 @@ body.modal-open {
     /* body overflow is hidden to hide main scrollbar when modal window is open */
     overflow: hidden;
 }
+
+grid {
+    .grid-container {
+        display: grid;
+        grid-template-columns: 30% 30% 30%;
+        grid-gap: 3%;
+        background-color: #fff;
+        color: #444;
+    }
+
+    .grid-item {
+        background-color: #444;
+        color: #fff;
+        border-radius: 15px;
+        padding: 20px;
+        font-size: 150%;
+        border: 2px solid #444;
+
+        -moz-transition: all .1s ease-in;
+        -o-transition: all .1s ease-in;
+        -webkit-transition: all .1s ease-in;
+        transition: all .1s ease-in;
+        padding: 20px;
+    }
+
+    .grid-item:hover {
+        cursor: pointer;
+        background: #e6e6e6;
+    }
+
+    .grid-item:hover h4{
+        cursor: pointer;
+        color: #444;
+    }
+
+    .grid-item h4 {
+        text-align: center;
+
+        -moz-transition: all .1s ease-in;
+        -o-transition: all .1s ease-in;
+        -webkit-transition: all .1s ease-in;
+        transition: all .1s ease-in;
+    }
+}

@@ -9,9 +9,13 @@ import {HttpErrorHandlerService} from './services/http-error-handler.service';
 import {ModalComponent} from './directive/modal.directive';
 import { ModalService } from './services/modal/modal.service';
 import { LanguageListComponent } from './component/language-list/language-list.component';
+import { UserComponent } from './component/user/user.component';
+import { GridComponent } from './component/grid/grid.component';
 
 const appRoutes: Routes = [
-  { path: 'languagepairs', component: LanguagePairComponent }
+    //{ path: 'languagepairs', component: LanguagePairComponent }
+    { path: 'user', component: UserComponent },
+    { path: 'lists', component: LanguageListComponent }
 ];
 
 @NgModule({
@@ -19,7 +23,9 @@ const appRoutes: Routes = [
     AppComponent,
     LanguagePairComponent,
     ModalComponent,
-    LanguageListComponent
+    LanguageListComponent,
+    UserComponent,
+    GridComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,19 @@
+<div>
+
+  <div class="grid-container">
+      <div *ngFor="let item of dataset" (click)="click(item)" class="grid-item" >
+          <ng-template *ngTemplateOutlet="template;context:item"></ng-template>
+      </div>
+  </div>
+
+  <!--<modal id="modal_language_pair">
+      <div class="modal">
+          <div class="modal-body">
+              <h1 style="height:1000px">A Tall Custom Modal!</h1>
+              <button (click)="closeModal('custom-modal-2');">Close</button>
+          </div>
+      </div>
+      <div class="modal-background"></div>
+  </modal> -->
+ 
+</div>

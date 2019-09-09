@@ -1,0 +1,15 @@
+<div>
+
+    <!--<button (click)="openModal('modal_language_pair')"> 
+    <img src="/img/add.png" />
+    <p>Sprachpaar hinzufügen</p>
+    </button> -->
+
+    <ng-template #griditem
+        let-name="name"> 
+        {{name}}
+    </ng-template>
+
+    <app-grid [click]="on_user_select.bind(this)" [template]="griditem" [dataset]="user"></app-grid>
+ 
+</div>
